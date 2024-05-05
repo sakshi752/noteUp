@@ -45,13 +45,16 @@ const Form = () => {
             className='w-full text-black py-[0.6rem] px-[1rem] rounded outline-none'
             type="text" placeholder='Enter Title'
             value={title}
-            onChange={(e) => setTitle(e.target.value)} />
+            onChange={(e) => setTitle(e.target.value)} 
+            required
+            />
           <ReactQuill
             className='w-full rounded bg-white text-black h-[12rem] overflow-y-scroll'
             modules={module}
             formats={formats}
             value={description}
             onChange={(value) => setDescription(value)} // Update the description state directly when we use reactquill
+            required
           />
           <button className='text-black bg-white py-2 w-[30%] md:w-[20%] rounded text-lg'>Add</button>
         </form>

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 export const NotesContext = createContext({});
 
@@ -9,6 +9,16 @@ const NotesContextProvider = ({ children }) => {
     const [description, setDescription] = useState("");
 
     const [notes,setNotes]=useState([]);
+
+    useEffect(()=>{
+        const storedNotes=JSON.parse(localStorage.getItem("notes"));
+        if (storedNotes) {
+            setNotes(storedNotes);
+        }
+        else{
+            setNotes([])
+        }
+    },[])
 
     const toggleForm = () => {
         setToggle(!toggle);
@@ -28,6 +38,17 @@ const NotesContextProvider = ({ children }) => {
         setNotes([...notes,newNote]);
         setTitle("");
         setDescription("");
+        setToggle(!toggle);
+
+        localStorage.setItem("notes", JSON.stringify([...notes, newNote]));
+    }
+
+    const deleteNote=()=>{
+
+    }
+
+    const editNote=()=>{
+
     }
 
     return (
