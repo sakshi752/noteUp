@@ -15,7 +15,7 @@ const Notes = () => {
       {notes.length !== 0 ?
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
           {notes.map((note) => (
-            <NoteCard key={note.id} title={note.title} description={note.description} date={note.date} />
+            <NoteCard key={note.id} id={note.id} title={note.title} description={note.description} date={note.date} />
           ))}
 
         </div> :
