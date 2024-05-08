@@ -26,12 +26,7 @@ const Form = () => {
 
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    if (formTitle === "Add") {
-      addNote();
-    } else {
-      editNote();
-    }
+    addNote(event);
   };
 
   return (

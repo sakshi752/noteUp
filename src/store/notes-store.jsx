@@ -5,11 +5,14 @@ export const NotesContext = createContext({});
 const NotesContextProvider = ({ children }) => {
     const [toggle, setToggle] = useState(false);
     // notes form 
-    const [formTitle,setFormTitle]=useState("Add")
+    const [formTitle, setFormTitle] = useState("Add")
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
     const [notes, setNotes] = useState([]);
+
+    // data to store id during update
+    const [editNoteId, setEditNoteId] = useState(null);
 
     useEffect(() => {
         const storedNotes = JSON.parse(localStorage.getItem("notes"));
@@ -29,23 +32,46 @@ const NotesContextProvider = ({ children }) => {
     };
 
     const addNote = (event) => {
+
         if (!description.trim()) {
             alert('Please enter a note description.');
             return;
         }
-        const newNote =
-        {
-            id: Date.now(),
-            title,
-            description,
-            date: new Date().toLocaleDateString(),
+        // Add notes
+        if (formTitle === 'Add') {
+            const newNote =
+            {
+                id: Date.now(),
+                title,
+                description,
+                date: new Date().toLocaleDateString(),
+            }
+            setNotes([...notes, newNote]);
+            localStorage.setItem("notes", JSON.stringify([...notes, newNote]));
         }
-        setNotes([...notes, newNote]);
+
+        // edit
+        else {
+            setToggle(!toggle);
+            const index = notes.findIndex((note) => note.id === editNoteId);
+            if (index !== -1) {
+                const updatedNotes = [...notes];
+                updatedNotes[index] = {
+                    ...updatedNotes[index],
+                    title,
+                    description,
+                    date: new Date().toLocaleDateString(),
+                };
+                // Update the notes state
+                setNotes(updatedNotes);
+                // Update localStorage
+                localStorage.setItem("notes", JSON.stringify(updatedNotes));
+            }
+        }
+
         setTitle("");
         setDescription("");
         setToggle(!toggle);
-
-        localStorage.setItem("notes", JSON.stringify([...notes, newNote]));
     }
 
     const deleteNote = (id) => {
@@ -53,16 +79,14 @@ const NotesContextProvider = ({ children }) => {
         setNotes(updatedNotes);
         localStorage.setItem("notes", JSON.stringify(updatedNotes));
     }
-    
 
-    const editNote = (id,title,description,date) => {
+
+    const editNote = (id, noteTitle, noteDescription, noteDate) => {
         setFormTitle("Edit")
         setToggle(!toggle);
-        setTitle(title);
-        setDescription(description);
-
-        const note=notes.find((note)=>note.id===id);
-        console.log(note);
+        setTitle(noteTitle);
+        setDescription(noteDescription);
+        setEditNoteId(id);
     }
 
     return (
