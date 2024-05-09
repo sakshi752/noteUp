@@ -31,7 +31,7 @@ const Form = () => {
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-slate-900 bg-opacity-50 z-10">
-      <div className='shadow shadow-white rounded bg-slate-800 w-[90vw] md:w-[50vw] h-[60vh] text-white px-4 pt-10 flex flex-col gap-7'>
+      <div className='shadow shadow-white rounded bg-slate-800 w-[90vw] md:w-[50vw] h-[70vh] text-white px-4 pt-10 flex flex-col gap-7'>
         <div className='flex justify-between'>
           <h1 className='text-xl tracking-wide font-semibold'>
             {formTitle === "Add" ? "Add New Notes" : "Edit Note"}

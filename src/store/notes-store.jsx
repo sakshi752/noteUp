@@ -14,6 +14,9 @@ const NotesContextProvider = ({ children }) => {
     // data to store id during update
     const [editNoteId, setEditNoteId] = useState(null);
 
+    // searchFeature
+    const [searchQuery, setSearchQuery] = useState("");
+
     useEffect(() => {
         const storedNotes = JSON.parse(localStorage.getItem("notes"));
         if (storedNotes) {
@@ -49,7 +52,6 @@ const NotesContextProvider = ({ children }) => {
             setNotes([...notes, newNote]);
             localStorage.setItem("notes", JSON.stringify([...notes, newNote]));
         }
-
         // edit
         else {
             setToggle(!toggle);
@@ -89,6 +91,20 @@ const NotesContextProvider = ({ children }) => {
         setEditNoteId(id);
     }
 
+    const searchNotes = (query) => {
+        // If there's no query, return all notes
+        if (!query) {
+            return setNotes(JSON.parse(localStorage.getItem("notes")));
+        }
+    
+        // Filter notes based on the search query
+        const filteredNotes = JSON.parse(localStorage.getItem("notes")).filter((note) => {
+            return note.title.toLowerCase().includes(query.trim().toLowerCase());
+        });
+
+        setNotes(filteredNotes);
+    };
+
     return (
         <NotesContext.Provider
             value={{
@@ -104,6 +120,9 @@ const NotesContextProvider = ({ children }) => {
                 deleteNote,
                 editNote,
                 formTitle,
+                searchNotes,
+                searchQuery,
+                setSearchQuery
             }}
         >
             {children}
