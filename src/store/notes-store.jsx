@@ -22,9 +22,6 @@ const NotesContextProvider = ({ children }) => {
         if (storedNotes) {
             setNotes(storedNotes);
         }
-        else {
-            setNotes()
-        }
     }, [])
 
     const toggleForm = () => {
@@ -50,7 +47,7 @@ const NotesContextProvider = ({ children }) => {
                 date: new Date().toLocaleDateString(),
             }
             setNotes([...notes, newNote]);
-            localStorage.setItem("notes", JSON.stringify([...notes, newNote]));
+            localStorage.setItem("notes", JSON.stringify([...originalNotes, newNote]));
         }
         // edit
         else {
@@ -92,17 +89,16 @@ const NotesContextProvider = ({ children }) => {
     }
 
     const searchNotes = (query) => {
-        // If there's no query, return all notes
-        if (!query) {
-            return setNotes(JSON.parse(localStorage.getItem("notes")));
+        if (query) {
+            const filteredNotes = notes.filter((note) =>
+                note.title.toLowerCase().includes(query.trim().toLowerCase())
+            );
+            setNotes(filteredNotes);
         }
-    
-        // Filter notes based on the search query
-        const filteredNotes = JSON.parse(localStorage.getItem("notes")).filter((note) => {
-            return note.title.toLowerCase().includes(query.trim().toLowerCase());
-        });
+        else {
+            JSON.parse(localStorage.getItem("notes"));
+        }
 
-        setNotes(filteredNotes);
     };
 
     return (
