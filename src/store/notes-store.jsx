@@ -32,7 +32,7 @@ const NotesContextProvider = ({ children }) => {
     };
 
     const addNote = (event) => {
-
+        event.preventDefault()
         if (!description.trim()) {
             alert('Please enter a note description.');
             return;
@@ -94,12 +94,17 @@ const NotesContextProvider = ({ children }) => {
                 note.title.toLowerCase().includes(query.trim().toLowerCase())
             );
             setNotes(filteredNotes);
+            setSearchQuery("");
         }
-        else {
-            JSON.parse(localStorage.getItem("notes"));
-        }
-
     };
+
+    const allNotes=()=>{
+        const storedNotes = JSON.parse(localStorage.getItem("notes"));
+        if (storedNotes) {
+            setNotes(storedNotes);
+        }
+        
+    }
 
     return (
         <NotesContext.Provider
@@ -118,7 +123,8 @@ const NotesContextProvider = ({ children }) => {
                 formTitle,
                 searchNotes,
                 searchQuery,
-                setSearchQuery
+                setSearchQuery,
+                allNotes
             }}
         >
             {children}
